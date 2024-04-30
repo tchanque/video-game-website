@@ -2,15 +2,24 @@
 <html>
   <head>
     <title>Basic routing</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="scss/main.scss">
   </head>
 
-  <body>
-    <a href="#">Home</a>
-    <a href="#pagelist">PageList</a>
-    <a href="#pagelist/borderlands">PageList borderlands</a>
+  <body class="light">
 
+    <header>
+      <h1 class="logo"> The Hyper Progame </h1>
+      <div class="search-bar">
+        <img src="src/assets/search.svg" alt="" class="svg">
+        <input class="search-input" type="text" name="search-game" id="" placeholder="Find a game...">
+      </div>
+    </header>
+    
     <section id="pageContent">Choisissez un lien</section>
+
+    <footer>
+      <p>Thomas Audevie @ 2020 - Fictional website for exercice</p>
+    </footer>
 
     <script src="js/Home.js"></script>
     <script src="js/PageList.js"></script>

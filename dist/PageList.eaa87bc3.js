@@ -44083,9 +44083,72 @@ module.exports.decrypt = DotenvModule.decrypt;
 module.exports.parse = DotenvModule.parse;
 module.exports.populate = DotenvModule.populate;
 module.exports = DotenvModule;
-},{"fs":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/_empty.js","path":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/path-browserify/index.js","os":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/os-browserify/browser.js","crypto":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/crypto-browserify/index.js","../package.json":"node_modules/dotenv/package.json","process":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/process/browser.js","buffer":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/buffer/index.js"}],"index.js":[function(require,module,exports) {
+},{"fs":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/_empty.js","path":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/path-browserify/index.js","os":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/os-browserify/browser.js","crypto":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/crypto-browserify/index.js","../package.json":"node_modules/dotenv/package.json","process":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/process/browser.js","buffer":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/buffer/index.js"}],"js/PageList.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PageList = void 0;
 require("dotenv").config();
-console.log(undefined);
+var API_KEY = "9a2e9a95f3d34c4f9328c42ad3d5eece";
+var svgHash = {
+  "pc": "windows.svg",
+  "playstation": "ps4.svg",
+  "xbox": "xbox.svg",
+  "linux": "linux.svg",
+  "nintendo": "switch.svg",
+  "mobile": "mobile.svg",
+  "mac": "windows.svg",
+  "android": "mobile.svg",
+  "web": "windows.svg"
+};
+var PageList = exports.PageList = function PageList() {
+  var argument = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var preparePage = function preparePage() {
+    // function that will prepare the page 
+    var cleanedArgument = argument.trim().replace(/\s+/g, '-'); // take the search parameter
+
+    var displayResults = function displayResults(articles) {
+      // this one creates a card game for each game
+      var resultsContent = articles.map(function (article, index) {
+        return "<article class=\"cardGame ".concat(index < 9 ? "" : "display_off", "\">\n            <img src=\"").concat(article.background_image, "\", class=\"cardGame__img\">\n            <h2 class=\"cardGame__title\">").concat(article.name, "</h2>\n            <div class=\"cardGame__platforms\">\n              ").concat(article.parent_platforms.map(function (platform) {
+          return "<img class=\"cardGame__platforms__logo\" src=\"".concat(svgHash[platform.platform.slug], "\" alt=\"\">");
+        }).join(''), "\n            </div>\n            <a href=\"#pagedetail/").concat(article.id, "\">").concat(article.id, "</a>\n          </article>");
+      });
+      var platformsDiv = document.querySelector('.cardGame__platforms');
+      var resultsContainer = document.querySelector('.page-list .articles');
+      resultsContainer.innerHTML = resultsContent.join("\n");
+    };
+    var fetchList = function fetchList(url, argument) {
+      var finalURL = argument ? "".concat(url, "&search=").concat(argument) : url;
+      fetch(finalURL).then(function (response) {
+        return response.json();
+      }).then(function (responseData) {
+        displayResults(responseData.results);
+      });
+    };
+    fetchList("https://api.rawg.io/api/games?key=".concat(API_KEY), cleanedArgument);
+  };
+  var render = function render() {
+    pageContent.innerHTML = "\n      <section class=\"welcome-container\">\n        <h1>Welcome,</h1>\n        <p>The Hyper Progame is the world's premier event for computer and video games and related products. At The Hyper Progame, the video game industry's top talent pack the Los Angeles Convention Center, connecting tens of thousands of the best, brightest, and most innovative in the interactive entertainement industry. For three exciting days, leading-edge companies, groundbreaking new technologies, and never-before-seen products will be showcased. The Hyper Progame connects you with both new and existing partners, industry executives, gamers, and social influencers providing unprecedented exposture</p>\n      </section>\n      <section class=\"page-list\">\n        <div class=\"filter\">\n          <button class=\"filter-menu\">Platform : any </button>\n        </div>\n        <div class=\"articles\">Loading...</div>\n        <div class=\"show-more\">\n          <button class=\"show-more__btn\">\n            <h2> Show more </h2>\n           </button>\n        </div>\n      </section>\n      ";
+    preparePage();
+  };
+  render();
+  var showMoreBtn = document.querySelector('.show-more__btn');
+  showMoreBtn.addEventListener('click', showMoreArticle);
+};
+var showMoreArticle = function showMoreArticle() {
+  // Select all elements with both classes .cardGame and .display_off
+  var allHiddenCards = document.querySelectorAll('.cardGame.display_off');
+
+  // Loop through the selected elements and remove the display_off class from the first 9 elements
+  allHiddenCards.forEach(function (card, index) {
+    if (index < 9) {
+      card.classList.remove('display_off');
+    }
+  });
+};
 },{"dotenv":"node_modules/dotenv/lib/main.js"}],"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -44111,7 +44174,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53008" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52440" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -44255,5 +44318,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/game.e31bb0bc.js.map
+},{}]},{},["../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/PageList.js"], null)
+//# sourceMappingURL=/PageList.eaa87bc3.js.map
