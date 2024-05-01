@@ -3,6 +3,9 @@
   margin: 0;
   padding: 0;
 }
+* .display-off {
+  display: none;
+}
 
 .welcome-container * {
   margin: 1rem 0;
@@ -13,10 +16,29 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
 }
-.articles .cardGame__img {
+.articles .cardGame__imgWrapper {
+  position: relative;
+}
+.articles .cardGame__imgWrapper__img {
+  display: block;
   width: 100%;
   height: 20vw;
   object-fit: cover;
+  transition: opacity 0.3s ease; /* Add transition effect for opacity */
+}
+.articles .cardGame__imgWrapper__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease; /* Add transition effect for opacity */
+  opacity: 0;
+}
+.articles .cardGame__imgWrapper:hover .cardGame__imgWrapper__img {
+  opacity: 0.7; /* Decrease opacity of image on hover */
+}
+.articles .cardGame__imgWrapper:hover .cardGame__imgWrapper__text {
+  opacity: 1; /* Show text on hover */
 }
 .articles .cardGame__platforms__logo {
   padding-right: 0.5rem;
@@ -113,6 +135,40 @@
   margin-right: 0.5rem;
 }
 
+.game-trailer h1 {
+  color: #D20932;
+}
+.game-trailer__video {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.game-screenshots {
+  padding: 2rem 0;
+}
+.game-screenshots h1 {
+  color: #D20932;
+}
+.game-screenshots__pictures {
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 40px;
+  padding-top: 2rem;
+}
+.game-screenshots__pictures img {
+  width: 100%;
+  height: 25vw;
+  object-fit: cover;
+}
+
+.youtube h1 {
+  color: #D20932;
+}
+
+.similar-games h1 {
+  color: #D20932;
+}
+
 body {
   background: #191919;
   color: #fff;
@@ -144,6 +200,7 @@ header .logo {
   font-weight: 600;
   font-size: 2.125rem;
   color: #D20932;
+  text-decoration: none;
 }
 header .search-bar {
   display: flex;

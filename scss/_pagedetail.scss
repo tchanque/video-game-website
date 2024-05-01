@@ -88,3 +88,47 @@
         }
     }
 }
+
+.game-trailer {
+    h1 {
+       color: $secondary-color; 
+    }
+
+    &__video {
+        width: 100%;
+        margin: 2rem 0;
+    }
+}
+
+.game-screenshots {
+    padding: 2rem 0;
+
+    h1 {
+        color: $secondary-color;
+    }
+
+    &__pictures {
+        display: grid;
+        grid-template-columns: repeat(2, 2fr);
+        grid-gap: 40px;
+        padding-top: 2rem;
+
+        img {
+            width: 100%;
+            height: 25vw;
+            object-fit: cover;
+        }
+    }
+}
+
+.youtube {
+    h1 {
+        color: $secondary-color;
+    }
+}
+
+.similar-games {
+    h1 {
+        color: $secondary-color;
+    }
+}

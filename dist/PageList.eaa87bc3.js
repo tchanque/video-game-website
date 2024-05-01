@@ -44112,11 +44112,10 @@ var PageList = exports.PageList = function PageList() {
     var displayResults = function displayResults(articles) {
       // this one creates a card game for each game
       var resultsContent = articles.map(function (article, index) {
-        return "<article class=\"cardGame ".concat(index < 9 ? "" : "display_off", "\">\n            <img src=\"").concat(article.background_image, "\", class=\"cardGame__img\">\n            <h2 class=\"cardGame__title\">").concat(article.name, "</h2>\n            <div class=\"cardGame__platforms\">\n              ").concat(article.parent_platforms.map(function (platform) {
+        return "<article class=\"cardGame ".concat(index < 9 ? "" : "display_off", "\">\n          <div class=\"cardGame__imgWrapper\">\n            <img src=\"").concat(article.background_image, "\" class=\"cardGame__imgWrapper__img\">\n            <p class=\"cardGame__imgWrapper__text\"> ").concat(article.name, " </p>\n          </div>\n          <h2 class=\"cardGame__title\">").concat(article.name, "</h2>\n          <div class=\"cardGame__platforms\">\n            ").concat(article.parent_platforms.map(function (platform) {
           return "<img class=\"cardGame__platforms__logo\" src=\"".concat(svgHash[platform.platform.slug], "\" alt=\"\">");
-        }).join(''), "\n            </div>\n            <a href=\"#pagedetail/").concat(article.id, "\">").concat(article.id, "</a>\n          </article>");
+        }).join(''), "\n          </div>\n          <a href=\"#pagedetail/").concat(article.id, "\">").concat(article.id, "</a>\n        </article>");
       });
-      var platformsDiv = document.querySelector('.cardGame__platforms');
       var resultsContainer = document.querySelector('.page-list .articles');
       resultsContainer.innerHTML = resultsContent.join("\n");
     };
@@ -44131,7 +44130,7 @@ var PageList = exports.PageList = function PageList() {
     fetchList("https://api.rawg.io/api/games?key=".concat(API_KEY), cleanedArgument);
   };
   var render = function render() {
-    pageContent.innerHTML = "\n      <section class=\"welcome-container\">\n        <h1>Welcome,</h1>\n        <p>The Hyper Progame is the world's premier event for computer and video games and related products. At The Hyper Progame, the video game industry's top talent pack the Los Angeles Convention Center, connecting tens of thousands of the best, brightest, and most innovative in the interactive entertainement industry. For three exciting days, leading-edge companies, groundbreaking new technologies, and never-before-seen products will be showcased. The Hyper Progame connects you with both new and existing partners, industry executives, gamers, and social influencers providing unprecedented exposture</p>\n      </section>\n      <section class=\"page-list\">\n        <div class=\"filter\">\n          <button class=\"filter-menu\">Platform : any </button>\n        </div>\n        <div class=\"articles\">Loading...</div>\n        <div class=\"show-more\">\n          <button class=\"show-more__btn\">\n            <h2> Show more </h2>\n           </button>\n        </div>\n      </section>\n      ";
+    pageContent.innerHTML = "\n    <section class=\"welcome-container\">\n      <h1>Welcome,</h1>\n      <p>The Hyper Progame is the world's premier event for computer and video games and related products. At The Hyper Progame, the video game industry's top talent pack the Los Angeles Convention Center, connecting tens of thousands of the best, brightest, and most innovative in the interactive entertainement industry. For three exciting days, leading-edge companies, groundbreaking new technologies, and never-before-seen products will be showcased. The Hyper Progame connects you with both new and existing partners, industry executives, gamers, and social influencers providing unprecedented exposture</p>\n    </section>\n    <section class=\"page-list\">\n      <div class=\"filter\">\n        <button class=\"filter-menu\">Platform : any </button>\n      </div>\n      <div class=\"articles\">Loading...</div>\n      <div class=\"show-more\">\n        <button class=\"show-more__btn\">\n          <h2> Show more </h2>\n          </button>\n      </div>\n    </section>\n    ";
     preparePage();
   };
   render();

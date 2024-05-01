@@ -5,6 +5,10 @@ $secondary-color: #D20932;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+    .display-off {
+        display: none
+    }
 }
 
 @function set-text-color($color) {

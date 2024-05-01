@@ -44123,11 +44123,10 @@ var PageList = exports.PageList = function PageList() {
     var displayResults = function displayResults(articles) {
       // this one creates a card game for each game
       var resultsContent = articles.map(function (article, index) {
-        return "<article class=\"cardGame ".concat(index < 9 ? "" : "display_off", "\">\n            <img src=\"").concat(article.background_image, "\", class=\"cardGame__img\">\n            <h2 class=\"cardGame__title\">").concat(article.name, "</h2>\n            <div class=\"cardGame__platforms\">\n              ").concat(article.parent_platforms.map(function (platform) {
+        return "<article class=\"cardGame ".concat(index < 9 ? "" : "display_off", "\">\n          <div class=\"cardGame__imgWrapper\">\n            <img src=\"").concat(article.background_image, "\" class=\"cardGame__imgWrapper__img\">\n            <p class=\"cardGame__imgWrapper__text\"> ").concat(article.name, " </p>\n          </div>\n          <h2 class=\"cardGame__title\">").concat(article.name, "</h2>\n          <div class=\"cardGame__platforms\">\n            ").concat(article.parent_platforms.map(function (platform) {
           return "<img class=\"cardGame__platforms__logo\" src=\"".concat(svgHash[platform.platform.slug], "\" alt=\"\">");
-        }).join(''), "\n            </div>\n            <a href=\"#pagedetail/").concat(article.id, "\">").concat(article.id, "</a>\n          </article>");
+        }).join(''), "\n          </div>\n          <a href=\"#pagedetail/").concat(article.id, "\">").concat(article.id, "</a>\n        </article>");
       });
-      var platformsDiv = document.querySelector('.cardGame__platforms');
       var resultsContainer = document.querySelector('.page-list .articles');
       resultsContainer.innerHTML = resultsContent.join("\n");
     };
@@ -44142,7 +44141,7 @@ var PageList = exports.PageList = function PageList() {
     fetchList("https://api.rawg.io/api/games?key=".concat(API_KEY), cleanedArgument);
   };
   var render = function render() {
-    pageContent.innerHTML = "\n      <section class=\"welcome-container\">\n        <h1>Welcome,</h1>\n        <p>The Hyper Progame is the world's premier event for computer and video games and related products. At The Hyper Progame, the video game industry's top talent pack the Los Angeles Convention Center, connecting tens of thousands of the best, brightest, and most innovative in the interactive entertainement industry. For three exciting days, leading-edge companies, groundbreaking new technologies, and never-before-seen products will be showcased. The Hyper Progame connects you with both new and existing partners, industry executives, gamers, and social influencers providing unprecedented exposture</p>\n      </section>\n      <section class=\"page-list\">\n        <div class=\"filter\">\n          <button class=\"filter-menu\">Platform : any </button>\n        </div>\n        <div class=\"articles\">Loading...</div>\n        <div class=\"show-more\">\n          <button class=\"show-more__btn\">\n            <h2> Show more </h2>\n           </button>\n        </div>\n      </section>\n      ";
+    pageContent.innerHTML = "\n    <section class=\"welcome-container\">\n      <h1>Welcome,</h1>\n      <p>The Hyper Progame is the world's premier event for computer and video games and related products. At The Hyper Progame, the video game industry's top talent pack the Los Angeles Convention Center, connecting tens of thousands of the best, brightest, and most innovative in the interactive entertainement industry. For three exciting days, leading-edge companies, groundbreaking new technologies, and never-before-seen products will be showcased. The Hyper Progame connects you with both new and existing partners, industry executives, gamers, and social influencers providing unprecedented exposture</p>\n    </section>\n    <section class=\"page-list\">\n      <div class=\"filter\">\n        <button class=\"filter-menu\">Platform : any </button>\n      </div>\n      <div class=\"articles\">Loading...</div>\n      <div class=\"show-more\">\n        <button class=\"show-more__btn\">\n          <h2> Show more </h2>\n          </button>\n      </div>\n    </section>\n    ";
     preparePage();
   };
   render();
@@ -44223,6 +44222,63 @@ var PageDetail = exports.PageDetail = function PageDetail(argument) {
       storeSection.innerHTML = stores.map(function (element) {
         return "\n            <div class=\"game-buy__stores__store\">\n              <a href=\"".concat(element.store.domain, "\">").concat(element.store.name, "</a>\n              <img src=\"search.svg\">\n            </div>\n            ");
       }).join(' ');
+      var displayTrailer = function displayTrailer(trailerData) {
+        console.log(trailerData);
+        if (trailerData.length !== 0) {
+          var previewLink = trailerData[0].data.max;
+          var video = articleDOM.querySelector(".game-trailer__video");
+          video.src = previewLink;
+        } else {
+          var trailerContainer = articleDOM.querySelector(".game-trailer");
+          trailerContainer.classList.add('display-off');
+        }
+      };
+      var fetchTrailer = function fetchTrailer(url, argument) {
+        fetch("".concat(url).concat(argument, "/movies?key=").concat(API_KEY)).then(function (response) {
+          return response.json();
+        }).then(function (responseTrailer) {
+          displayTrailer(responseTrailer.results);
+        });
+      };
+      fetchTrailer('https://api.rawg.io/api/games/', cleanedArgument);
+      var displayScreenshots = function displayScreenshots(screenshotsData) {
+        var results = screenshotsData.results;
+        if (results.length !== 0) {
+          var screenshotsContainer = articleDOM.querySelector(".game-screenshots__pictures");
+          screenshotsContainer.innerHTML = results.map(function (screenshot) {
+            return "<img src=".concat(screenshot.image, ">");
+          }).join(" ");
+        } else {
+          var screenshotContainer = articleDOM.querySelector(".game-screenshots");
+          screenshotContainer.classList.add('display-off');
+        }
+      };
+      var fetchScreenshots = function fetchScreenshots(url, argument) {
+        fetch("".concat(url).concat(argument, "/screenshots?key=").concat(API_KEY)).then(function (response) {
+          return response.json();
+        }).then(function (responseScreenshots) {
+          displayScreenshots(responseScreenshots);
+        });
+      };
+      fetchScreenshots('https://api.rawg.io/api/games/', cleanedArgument);
+
+      // const displayYoutube = (youtubeData) => {
+      //   const {results} = youtubeData;
+      //   const youtubeContainer = articleDOM.querySelector(".youtube__videos")
+      //   youtubeContainer.innerHTML = results.map((video) => `<img src=${screenshot}>`).join(" ")
+
+      // }
+
+      // const fetchYoutube = (url, argument) => {
+      //   fetch(`${url}${argument}/youtube?key=${API_KEY}`)
+      //     .then((response) => response.json())
+      //     .then((responseYoutube) => {
+      //       displayYoutube(responseYoutube);
+      //     });
+      // }
+
+      // We don't have a professional API key to query this data 
+      // fetchYoutube('https://api.rawg.io/api/games/', cleanedArgument);
     };
     var fetchGame = function fetchGame(url, argument) {
       fetch("".concat(url, "/").concat(argument, "?key=").concat(API_KEY)).then(function (response) {
@@ -44234,7 +44290,7 @@ var PageDetail = exports.PageDetail = function PageDetail(argument) {
     fetchGame('https://api.rawg.io/api/games', cleanedArgument);
   };
   var render = function render() {
-    pageContent.innerHTML = "\n        <section class=\"page-detail\">\n          <div class=\"game-hero\">\n            <img class=\"game-hero__backgroundImg\" src=\"\">\n\n            <a class=\"game-hero__websiteBtn\" href=\"\" target=\"_blank\">\n             <p> Check Website </p>\n             <i class=\"fa-solid fa-play\"></i>\n            </a>\n          </div>\n\n          <div class=\"game-detail\">\n\n            <div class=\"game-detail__header\">\n              <h1 class=\"game-detail__header__title\"> </h1>\n              <h2 class=\"game-detail__header__ratings\"> </h2>\n\n            </div>\n              <div class=\"game-detail__content\">\n            </div>\n\n            <div class=\"game-detail__release\">\n              <div class=\"game-detail__release__date\">\n                <h4> Release Date </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__developers\">\n                <h4> Developer </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__platforms\">\n                <h4> Platforms </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__publishers\">\n                <h4> Publisher </h4>\n                <p> </p>\n              </div>\n            </div>\n\n            <div class=\"game-detail__classification\">\n              <div class=\"game-detail__classification__genre\">\n                <h4> Genre </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__classification__tags\">\n                <h4> Tags </h4>\n                <p> </p>\n              </div>\n            </div>\n\n          </div>\n\n          <div class=\"game-buy\">\n            <h1>BUY</h1>\n            <div class=\"game-buy__stores\"> </div>\n          </div>\n\n        </section>\n      ";
+    pageContent.innerHTML = "\n        <section class=\"page-detail\">\n          <div class=\"game-hero\">\n            <img class=\"game-hero__backgroundImg\" src=\"\">\n\n            <a class=\"game-hero__websiteBtn\" href=\"\" target=\"_blank\">\n             <p> Check Website </p>\n             <i class=\"fa-solid fa-play\"></i>\n            </a>\n          </div>\n\n          <div class=\"game-detail\">\n\n            <div class=\"game-detail__header\">\n              <h1 class=\"game-detail__header__title\"> </h1>\n              <h2 class=\"game-detail__header__ratings\"> </h2>\n\n            </div>\n              <div class=\"game-detail__content\">\n            </div>\n\n            <div class=\"game-detail__release\">\n              <div class=\"game-detail__release__date\">\n                <h4> Release Date </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__developers\">\n                <h4> Developer </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__platforms\">\n                <h4> Platforms </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__publishers\">\n                <h4> Publisher </h4>\n                <p> </p>\n              </div>\n            </div>\n\n            <div class=\"game-detail__classification\">\n              <div class=\"game-detail__classification__genre\">\n                <h4> Genre </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__classification__tags\">\n                <h4> Tags </h4>\n                <p> </p>\n              </div>\n            </div>\n\n          </div>\n\n          <div class=\"game-buy\">\n            <h1>BUY</h1>\n            <div class=\"game-buy__stores\"> </div>\n          </div>\n\n          <div class=\"game-trailer\">\n            <h1> TRAILER </h1>\n            <video controls class=\"game-trailer__video\"></video>\n          </div>\n\n          <div class=\"game-screenshots\">\n            <h1> SCREENSHOTS </h1>\n            <div class=\"game-screenshots__pictures\">\n            </div>\n          </div>\n\n          <!-- <div class=\"youtube\">\n            <h1> YOUTUBE </h1>\n            <div class=\"youtube__videos\"> </div>\n          </div>-->\n\n          <!-- <div class=\"similar-games\">\n            <h1> SIMILAR GAMES </h1>\n          </div> -->\n\n        </section>\n      ";
     preparePage();
   };
   render();
