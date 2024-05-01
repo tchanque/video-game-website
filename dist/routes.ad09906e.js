@@ -44173,13 +44173,56 @@ var PageDetail = exports.PageDetail = function PageDetail(argument) {
   var preparePage = function preparePage() {
     var cleanedArgument = argument.trim().replace(/\s+/g, "-");
     var displayGame = function displayGame(gameData) {
+      console.log(gameData);
       var name = gameData.name,
+        rating = gameData.rating,
+        ratings_count = gameData.ratings_count,
+        background_image = gameData.background_image,
+        website = gameData.website,
+        description = gameData.description,
         released = gameData.released,
-        description = gameData.description;
-      var articleDOM = document.querySelector(".page-detail .article");
-      articleDOM.querySelector("h1.title").innerHTML = name;
-      articleDOM.querySelector("p.release-date span").innerHTML = released;
-      articleDOM.querySelector("p.description").innerHTML = description;
+        developers = gameData.developers,
+        platforms = gameData.platforms,
+        publishers = gameData.publishers,
+        genres = gameData.genres,
+        tags = gameData.tags,
+        stores = gameData.stores;
+      var articleDOM = document.querySelector(".page-detail");
+      articleDOM.querySelector(".game-hero__backgroundImg").src = background_image;
+      articleDOM.querySelector(".game-hero__websiteBtn").href = website;
+      articleDOM.querySelector(".game-detail__header__title").innerHTML = name + ",";
+      articleDOM.querySelector(".game-detail__header__ratings").innerHTML = rating + "/5 - " + ratings_count + " votes";
+      articleDOM.querySelector(".game-detail__content").innerHTML = description;
+
+      // release date
+      articleDOM.querySelector(".game-detail__release__date p").innerHTML = released;
+      // developers
+      articleDOM.querySelector(".game-detail__release__developers p").innerHTML = developers.map(function (developer) {
+        return developer.name;
+      }).join(', ');
+      // platforms
+      articleDOM.querySelector(".game-detail__release__platforms p").innerHTML = platforms.map(function (platform) {
+        return platform.platform.name;
+      }).join(', ');
+      // publishers
+      articleDOM.querySelector(".game-detail__release__publishers p").innerHTML = publishers.map(function (publisher) {
+        return publisher.name;
+      }).join(', ');
+
+      // genre
+      articleDOM.querySelector(".game-detail__classification__genre p").innerHTML = genres.map(function (genre) {
+        return genre.name;
+      }).join(', ');
+      // tags
+      articleDOM.querySelector(".game-detail__classification__tags p").innerHTML = tags.map(function (tag) {
+        return tag.name;
+      }).join(', ');
+
+      // stores
+      var storeSection = articleDOM.querySelector(".game-buy__stores");
+      storeSection.innerHTML = stores.map(function (element) {
+        return "\n            <div class=\"game-buy__stores__store\">\n              <a href=\"".concat(element.store.domain, "\">").concat(element.store.name, "</a>\n              <img src=\"search.svg\">\n            </div>\n            ");
+      }).join(' ');
     };
     var fetchGame = function fetchGame(url, argument) {
       fetch("".concat(url, "/").concat(argument, "?key=").concat(API_KEY)).then(function (response) {
@@ -44191,7 +44234,7 @@ var PageDetail = exports.PageDetail = function PageDetail(argument) {
     fetchGame('https://api.rawg.io/api/games', cleanedArgument);
   };
   var render = function render() {
-    pageContent.innerHTML = "\n        <section class=\"page-detail\">\n          <div class=\"article\">\n            <h1 class=\"title\"></h1>\n            <p class=\"release-date\">Release date : <span></span></p>\n            <p class=\"description\"></p>\n          </div>\n        </section>\n      ";
+    pageContent.innerHTML = "\n        <section class=\"page-detail\">\n          <div class=\"game-hero\">\n            <img class=\"game-hero__backgroundImg\" src=\"\">\n\n            <a class=\"game-hero__websiteBtn\" href=\"\" target=\"_blank\">\n             <p> Check Website </p>\n             <i class=\"fa-solid fa-play\"></i>\n            </a>\n          </div>\n\n          <div class=\"game-detail\">\n\n            <div class=\"game-detail__header\">\n              <h1 class=\"game-detail__header__title\"> </h1>\n              <h2 class=\"game-detail__header__ratings\"> </h2>\n\n            </div>\n              <div class=\"game-detail__content\">\n            </div>\n\n            <div class=\"game-detail__release\">\n              <div class=\"game-detail__release__date\">\n                <h4> Release Date </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__developers\">\n                <h4> Developer </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__platforms\">\n                <h4> Platforms </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__publishers\">\n                <h4> Publisher </h4>\n                <p> </p>\n              </div>\n            </div>\n\n            <div class=\"game-detail__classification\">\n              <div class=\"game-detail__classification__genre\">\n                <h4> Genre </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__classification__tags\">\n                <h4> Tags </h4>\n                <p> </p>\n              </div>\n            </div>\n\n          </div>\n\n          <div class=\"game-buy\">\n            <h1>BUY</h1>\n            <div class=\"game-buy__stores\"> </div>\n          </div>\n\n        </section>\n      ";
     preparePage();
   };
   render();
@@ -44236,7 +44279,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52440" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49969" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
