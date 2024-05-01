@@ -44083,9 +44083,142 @@ module.exports.decrypt = DotenvModule.decrypt;
 module.exports.parse = DotenvModule.parse;
 module.exports.populate = DotenvModule.populate;
 module.exports = DotenvModule;
-},{"fs":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/_empty.js","path":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/path-browserify/index.js","os":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/os-browserify/browser.js","crypto":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/crypto-browserify/index.js","../package.json":"node_modules/dotenv/package.json","process":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/process/browser.js","buffer":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/buffer/index.js"}],"index.js":[function(require,module,exports) {
+},{"fs":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/_empty.js","path":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/path-browserify/index.js","os":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/os-browserify/browser.js","crypto":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/crypto-browserify/index.js","../package.json":"node_modules/dotenv/package.json","process":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/process/browser.js","buffer":"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/node_modules/buffer/index.js"}],"js/PageDetail.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PageDetail = void 0;
 require("dotenv").config();
-console.log(undefined);
+var API_KEY = "9a2e9a95f3d34c4f9328c42ad3d5eece";
+var PageDetail = exports.PageDetail = function PageDetail(argument) {
+  var preparePage = function preparePage() {
+    var cleanedArgument = argument.trim().replace(/\s+/g, "-");
+    var displayGame = function displayGame(gameData) {
+      console.log(gameData);
+      var name = gameData.name,
+        rating = gameData.rating,
+        ratings_count = gameData.ratings_count,
+        background_image = gameData.background_image,
+        website = gameData.website,
+        description = gameData.description,
+        released = gameData.released,
+        developers = gameData.developers,
+        platforms = gameData.platforms,
+        publishers = gameData.publishers,
+        genres = gameData.genres,
+        tags = gameData.tags,
+        stores = gameData.stores;
+      var articleDOM = document.querySelector(".page-detail");
+      articleDOM.querySelector(".game-hero__backgroundImg").src = background_image;
+      articleDOM.querySelector(".game-hero__websiteBtn").href = website;
+      articleDOM.querySelector(".game-detail__header__title").innerHTML = name + ",";
+      articleDOM.querySelector(".game-detail__header__ratings").innerHTML = rating + "/5 - " + ratings_count + " votes";
+      articleDOM.querySelector(".game-detail__content").innerHTML = description;
+
+      // release date
+      articleDOM.querySelector(".game-detail__release__date p").innerHTML = released;
+      // developers
+      articleDOM.querySelector(".game-detail__release__developers p").innerHTML = developers.map(function (developer) {
+        return developer.name;
+      }).join(', ');
+      // platforms
+      articleDOM.querySelector(".game-detail__release__platforms p").innerHTML = platforms.map(function (platform) {
+        return platform.platform.name;
+      }).join(', ');
+      // publishers
+      articleDOM.querySelector(".game-detail__release__publishers p").innerHTML = publishers.map(function (publisher) {
+        return publisher.name;
+      }).join(', ');
+
+      // genre
+      articleDOM.querySelector(".game-detail__classification__genre p").innerHTML = genres.map(function (genre) {
+        return genre.name;
+      }).join(', ');
+      // tags
+      articleDOM.querySelector(".game-detail__classification__tags p").innerHTML = tags.map(function (tag) {
+        return tag.name;
+      }).join(', ');
+
+      // stores
+      var storeSection = articleDOM.querySelector(".game-buy__stores");
+      storeSection.innerHTML = stores.map(function (element) {
+        return "\n            <div class=\"game-buy__stores__store\">\n              <a href=\"".concat(element.store.domain, "\">").concat(element.store.name, "</a>\n              <img src=\"search.svg\">\n            </div>\n            ");
+      }).join(' ');
+      var displayTrailer = function displayTrailer(trailerData) {
+        console.log(trailerData);
+        if (trailerData.length !== 0) {
+          var previewLink = trailerData[0].data.max;
+          var video = articleDOM.querySelector(".game-trailer__video");
+          video.src = previewLink;
+        } else {
+          var trailerContainer = articleDOM.querySelector(".game-trailer");
+          trailerContainer.classList.add('display-off');
+        }
+      };
+      var fetchTrailer = function fetchTrailer(url, argument) {
+        fetch("".concat(url).concat(argument, "/movies?key=").concat(API_KEY)).then(function (response) {
+          return response.json();
+        }).then(function (responseTrailer) {
+          displayTrailer(responseTrailer.results);
+        });
+      };
+      fetchTrailer('https://api.rawg.io/api/games/', cleanedArgument);
+      var displayScreenshots = function displayScreenshots(screenshotsData) {
+        var results = screenshotsData.results;
+        if (results.length !== 0) {
+          var screenshotsContainer = articleDOM.querySelector(".game-screenshots__pictures");
+          screenshotsContainer.innerHTML = results.map(function (screenshot) {
+            return "<img src=".concat(screenshot.image, ">");
+          }).join(" ");
+        } else {
+          var screenshotContainer = articleDOM.querySelector(".game-screenshots");
+          screenshotContainer.classList.add('display-off');
+        }
+      };
+      var fetchScreenshots = function fetchScreenshots(url, argument) {
+        fetch("".concat(url).concat(argument, "/screenshots?key=").concat(API_KEY)).then(function (response) {
+          return response.json();
+        }).then(function (responseScreenshots) {
+          displayScreenshots(responseScreenshots);
+        });
+      };
+      fetchScreenshots('https://api.rawg.io/api/games/', cleanedArgument);
+
+      // const displayYoutube = (youtubeData) => {
+      //   const {results} = youtubeData;
+      //   const youtubeContainer = articleDOM.querySelector(".youtube__videos")
+      //   youtubeContainer.innerHTML = results.map((video) => `<img src=${screenshot}>`).join(" ")
+
+      // }
+
+      // const fetchYoutube = (url, argument) => {
+      //   fetch(`${url}${argument}/youtube?key=${API_KEY}`)
+      //     .then((response) => response.json())
+      //     .then((responseYoutube) => {
+      //       displayYoutube(responseYoutube);
+      //     });
+      // }
+
+      // We don't have a professional API key to query this data 
+      // fetchYoutube('https://api.rawg.io/api/games/', cleanedArgument);
+    };
+    var fetchGame = function fetchGame(url, argument) {
+      fetch("".concat(url, "/").concat(argument, "?key=").concat(API_KEY)).then(function (response) {
+        return response.json();
+      }).then(function (responseData) {
+        displayGame(responseData);
+      });
+    };
+    fetchGame('https://api.rawg.io/api/games', cleanedArgument);
+  };
+  var render = function render() {
+    pageContent.innerHTML = "\n        <section class=\"page-detail\">\n          <div class=\"game-hero\">\n            <img class=\"game-hero__backgroundImg\" src=\"\">\n\n            <a class=\"game-hero__websiteBtn\" href=\"\" target=\"_blank\">\n             <p> Check Website </p>\n             <i class=\"fa-solid fa-play\"></i>\n            </a>\n          </div>\n\n          <div class=\"game-detail\">\n\n            <div class=\"game-detail__header\">\n              <h1 class=\"game-detail__header__title\"> </h1>\n              <h2 class=\"game-detail__header__ratings\"> </h2>\n\n            </div>\n              <div class=\"game-detail__content\">\n            </div>\n\n            <div class=\"game-detail__release\">\n              <div class=\"game-detail__release__date\">\n                <h4> Release Date </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__developers\">\n                <h4> Developer </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__platforms\">\n                <h4> Platforms </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__release__publishers\">\n                <h4> Publisher </h4>\n                <p> </p>\n              </div>\n            </div>\n\n            <div class=\"game-detail__classification\">\n              <div class=\"game-detail__classification__genre\">\n                <h4> Genre </h4>\n                <p> </p>\n              </div>\n              <div class=\"game-detail__classification__tags\">\n                <h4> Tags </h4>\n                <p> </p>\n              </div>\n            </div>\n\n          </div>\n\n          <div class=\"game-buy\">\n            <h1>BUY</h1>\n            <div class=\"game-buy__stores\"> </div>\n          </div>\n\n          <div class=\"game-trailer\">\n            <h1> TRAILER </h1>\n            <video controls class=\"game-trailer__video\"></video>\n          </div>\n\n          <div class=\"game-screenshots\">\n            <h1> SCREENSHOTS </h1>\n            <div class=\"game-screenshots__pictures\">\n            </div>\n          </div>\n\n          <!-- <div class=\"youtube\">\n            <h1> YOUTUBE </h1>\n            <div class=\"youtube__videos\"> </div>\n          </div>-->\n\n          <!-- <div class=\"similar-games\">\n            <h1> SIMILAR GAMES </h1>\n          </div> -->\n\n        </section>\n      ";
+    preparePage();
+  };
+  render();
+};
 },{"dotenv":"node_modules/dotenv/lib/main.js"}],"../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -44111,7 +44244,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53008" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49969" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -44255,5 +44388,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/game.e31bb0bc.js.map
+},{}]},{},["../../../../../.nvm/versions/node/v21.6.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/PageDetail.js"], null)
+//# sourceMappingURL=/PageDetail.00dd471c.js.map

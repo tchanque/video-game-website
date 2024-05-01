@@ -1,0 +1,68 @@
+@import 'config';
+@import 'pagelist';
+@import 'pagedetail';
+
+body {
+    background: $primary-color;
+    color: set-text-color($primary-color);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem 3rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 2.125rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    width: 100%;
+    padding-bottom: 2rem;
+
+    .logo {
+        font-weight: 600;
+        font-size: 2.125rem;
+        color: $secondary-color;
+        text-decoration: none;
+    }
+
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid ;
+        border-radius: 15px;
+        padding: 0.25rem 0.7rem;
+    }
+
+    .search-input {
+        background: transparent;
+        border-color: transparent;
+        padding: 0 0.25rem;
+        color: #fff;
+        outline: none; // remove the outline effect (highlight the contour of the input area) when focusing on the text area (click)
+    }
+
+    .svg {
+        margin-right: 0.25rem;
+    }
+    
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+

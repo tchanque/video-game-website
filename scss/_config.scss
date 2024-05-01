@@ -1,0 +1,20 @@
+$primary-color: #191919;
+$secondary-color: #D20932;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    .display-off {
+        display: none
+    }
+}
+
+@function set-text-color($color) {
+    @if (lightness($color) > 40%) {
+        @return #000;
+    } @else {
+        @return #fff;
+    }
+}

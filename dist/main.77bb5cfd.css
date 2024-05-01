@@ -1,0 +1,231 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+* .display-off {
+  display: none;
+}
+
+.welcome-container * {
+  margin: 1rem 0;
+}
+
+.articles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+.articles .cardGame__imgWrapper {
+  position: relative;
+}
+.articles .cardGame__imgWrapper__img {
+  display: block;
+  width: 100%;
+  height: 20vw;
+  object-fit: cover;
+  transition: opacity 0.3s ease; /* Add transition effect for opacity */
+}
+.articles .cardGame__imgWrapper__text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease; /* Add transition effect for opacity */
+  opacity: 0;
+}
+.articles .cardGame__imgWrapper:hover .cardGame__imgWrapper__img {
+  opacity: 0.7; /* Decrease opacity of image on hover */
+}
+.articles .cardGame__imgWrapper:hover .cardGame__imgWrapper__text {
+  opacity: 1; /* Show text on hover */
+}
+.articles .cardGame__platforms__logo {
+  padding-right: 0.5rem;
+}
+.articles .display_off {
+  display: none;
+}
+
+.show-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 0;
+}
+.show-more__btn {
+  border-radius: 0px;
+  border: none;
+  padding: 1rem 4rem;
+  background: #D20932;
+  color: #fff;
+  cursor: pointer;
+}
+
+.game-hero {
+  position: relative;
+  margin: 2rem 0;
+}
+.game-hero__backgroundImg {
+  width: 100%;
+  height: 50vw;
+  object-fit: cover;
+}
+.game-hero__websiteBtn {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.75rem;
+  background: #D20932;
+  border: none;
+  color: #fff;
+  text-decoration: none;
+  font-size: 400;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.game-hero__websiteBtn p {
+  margin-right: 2rem;
+}
+
+.game-detail * {
+  padding: 0.5rem 0;
+}
+.game-detail__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+.game-detail__header__ratings {
+  color: #D20932;
+}
+.game-detail__release {
+  display: flex;
+  justify-content: start;
+}
+.game-detail__release * {
+  flex: 1;
+  margin-right: 1rem;
+}
+.game-detail__classification {
+  display: flex;
+  justify-content: start;
+}
+.game-detail__classification * {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.game-buy h1 {
+  color: #D20932;
+}
+.game-buy__stores {
+  padding: 2rem 0;
+}
+.game-buy__stores__store {
+  display: flex;
+  padding: 0.5rem 0;
+}
+.game-buy__stores__store a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 0.25rem solid #D20932;
+  margin-right: 0.5rem;
+}
+
+.game-trailer h1 {
+  color: #D20932;
+}
+.game-trailer__video {
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.game-screenshots {
+  padding: 2rem 0;
+}
+.game-screenshots h1 {
+  color: #D20932;
+}
+.game-screenshots__pictures {
+  display: grid;
+  grid-template-columns: repeat(2, 2fr);
+  grid-gap: 40px;
+  padding-top: 2rem;
+}
+.game-screenshots__pictures img {
+  width: 100%;
+  height: 25vw;
+  object-fit: cover;
+}
+
+.youtube h1 {
+  color: #D20932;
+}
+
+.similar-games h1 {
+  color: #D20932;
+}
+
+body {
+  background: #191919;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem 3rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 2.125rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+header .logo {
+  font-weight: 600;
+  font-size: 2.125rem;
+  color: #D20932;
+  text-decoration: none;
+}
+header .search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 15px;
+  padding: 0.25rem 0.7rem;
+}
+header .search-input {
+  background: transparent;
+  border-color: transparent;
+  padding: 0 0.25rem;
+  color: #fff;
+  outline: none;
+}
+header .svg {
+  margin-right: 0.25rem;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/*# sourceMappingURL=/main.77bb5cfd.css.map */
